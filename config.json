@@ -1,0 +1,21 @@
+{
+    "EmailSettings": {
+        "EnableSignUpWithEmail": true,
+        "EnableSignInWithEmail": true,
+        "EnableSignInWithUsername": true,
+        "FeedbackName": "hk7",
+        "FeedbackEmail": "mail@qq.com",
+        "FeedbackOrganization": "",
+        "EnableSMTPAuth": true,
+        "SMTPUsername": "mail@qq.com",
+        "SMTPPassword": "code",
+        "SMTPServer": "smtp.qq.com",
+        "SMTPPort": "587",
+        "ConnectionSecurity": "STARTTLS",
+        "SkipServerCertificateVerification": true,
+        "TempSubject": "验证码发送测试",
+        "TempTitle": "欢迎您注册成为ai用户",
+        "TempInfo": "邮箱注册验证码激活",
+        "TempName": "verify_body"
+    }
+}
