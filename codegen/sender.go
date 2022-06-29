@@ -29,27 +29,27 @@ var (
 	htmlTemplates *template.Template
 )
 
-func NewEmailSender(userEmail, subject, TempBody string, cfg *utils.Config) (int, error) {
+func NewEmailSender(userEmail, subject, TempBody string, cfg *utils.Config) (string, error) {
 	if len(userEmail) == 0 || len(subject) == 0 || len(TempBody) == 0 {
-		return 0, errors.New("api.new.email.sender.error")
+		return "", errors.New("api.new.email.sender.error")
 	}
 
 	err := utils.InitHTML()
 	if err != nil {
-		return 0, err
+		return "", err
 	}
-	verifyCode, err := initVerifyCode(userEmail, subject, TempBody, cfg)
+	code, err := initVerifyCode(userEmail, subject, TempBody, cfg)
 	if err != nil {
-		return 0, err
+		return "", err
 	}
 
-	return verifyCode, nil
+	return code, nil
 }
 
-func MakeVerifyCode() (emailCode int, code string) {
-	emailCode = rand.New(rand.NewSource(time.Now().UnixNano())).Intn(899999) + 100000
+func MakeVerifyCode() (code string) {
+	emailCode := rand.New(rand.NewSource(time.Now().UnixNano())).Intn(899999) + 100000
 	code = strconv.Itoa(emailCode)
-	return emailCode, code
+	return code
 }
 
 func LoadConfig(cfg *utils.Config, fileName string) error {
@@ -99,9 +99,9 @@ func LoadConfig(cfg *utils.Config, fileName string) error {
 }
 
 // SendVerifyCode init send
-func initVerifyCode(userEmail, subject, locale string, cfg *utils.Config) (int, error) {
+func initVerifyCode(userEmail, subject, locale string, cfg *utils.Config) (string, error) {
 	T := utils.GetUserTranslations(locale)
-	emailCode, code := MakeVerifyCode()
+	code := MakeVerifyCode()
 
 	bodyPage := utils.NewHTMLTemplate(cfg.TempName, locale)
 	bodyPage.Props["Title"] = T(cfg.TempTitle, map[string]interface{}{"SiteName": ""})
@@ -110,7 +110,7 @@ func initVerifyCode(userEmail, subject, locale string, cfg *utils.Config) (int, 
 
 	message := "\r\n<html><body>" + bodyPage.Render() + "</body></html>"
 
-	return emailCode, sendVerifyCode(userEmail, subject, message, cfg)
+	return code, sendVerifyCode(userEmail, subject, message, cfg)
 }
 
 // sendVerifyCode 邮件发送

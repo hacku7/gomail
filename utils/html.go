@@ -7,7 +7,6 @@ package utils
 
 import (
 	"bytes"
-	"errors"
 	"html/template"
 	"net/http"
 
@@ -37,10 +36,6 @@ func InitHTML() error {
 
 func InitHTMLWithDir(dir string) error {
 	var err error
-	if htmlTemplates != nil {
-		return errors.New("api.templates.error")
-	}
-
 	templatesDir, _ := FindDir(dir)
 	if htmlTemplates, err = template.ParseGlob(templatesDir + "*.html"); err != nil {
 		l4g.Error(T("api.init.parsing_templates.error"), err)
